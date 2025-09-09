@@ -6,11 +6,18 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  Animated,
   PanResponder,
   StatusBar,
 } from "react-native";
 import PagerView, { PagerViewOnPageSelectedEvent } from "react-native-pager-view";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withSpring,
+  runOnJS,
+} from "react-native-reanimated";
+import * as Haptics from "expo-haptics";
 
 const { width, height } = Dimensions.get("window");
 
@@ -18,53 +25,61 @@ export default function MyPager() {
   const pagerRef = useRef<PagerView>(null);
   const [page, setPage] = useState<number>(0);
   const [welcome, setWelcome] = useState(false);
-  const swipeX = useRef(new Animated.Value(0)).current;
-  const welcomeOpacity = useRef(new Animated.Value(0)).current;
+
+  const swipeX = useSharedValue(0);
+  const shadow = useSharedValue(2);
 
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (_, gesture) => {
-        if (gesture.dx >= 0 && gesture.dx <= width * 0.65) {
-          swipeX.setValue(gesture.dx);
+        if (gesture.dx >= 0 && gesture.dx <= width * 0.85 - 70) {
+          swipeX.value = gesture.dx;
+          shadow.value = withSpring(10);
         }
       },
       onPanResponderRelease: (_, gesture) => {
-        if (gesture.dx > width * 0.4) {
-          Animated.timing(swipeX, {
-            toValue: width * 0.65,
-            duration: 200,
-            useNativeDriver: false,
-          }).start(() => {
-            setWelcome(true);
-            Animated.timing(welcomeOpacity, {
-              toValue: 1,
-              duration: 300,
-              useNativeDriver: true,
-            }).start();
+        if (gesture.dx > width * 0.5) {
+          swipeX.value = withTiming(width * 0.85 - 70, { duration: 200 }, () => {
+            runOnJS(setWelcome)(true);
+            runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
 
-            setTimeout(() => {
-              Animated.timing(welcomeOpacity, {
-                toValue: 0,
-                duration: 300,
-                useNativeDriver: true,
-              }).start(() => setWelcome(false));
-
-              Animated.spring(swipeX, {
-                toValue: 0,
-                useNativeDriver: false,
-              }).start();
-            }, 1500);
+            // ✅ msg show hoga aur button reset hoga — koi timer nahi
+            swipeX.value = withSpring(0, {
+              damping: 15,
+              stiffness: 120,
+              mass: 0.5,
+            });
+            shadow.value = withSpring(2);
           });
         } else {
-          Animated.spring(swipeX, {
-            toValue: 0,
-            useNativeDriver: false,
-          }).start();
+          swipeX.value = withSpring(0, {
+            damping: 15,
+            stiffness: 120,
+            mass: 0.5,
+          });
+          shadow.value = withSpring(2);
         }
       },
     })
   ).current;
+
+  const thumbStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: swipeX.value }],
+    shadowColor: "#000000",
+    shadowOpacity: 0.3,
+    shadowRadius: shadow.value,
+    elevation: shadow.value,
+  }));
+
+  const bgStyle = useAnimatedStyle(() => {
+    const progress = swipeX.value / (width * 0.85 - 70);
+    return {
+      backgroundColor: `rgba(240, 98, 93, ${0.3 + progress * 0.7})`,
+      borderColor: "#f0625d",
+      borderWidth: 2,
+    };
+  });
 
   const handleStartNow = () => {
     if (pagerRef.current) {
@@ -132,28 +147,27 @@ export default function MyPager() {
             process.
           </Text>
 
+          {/* ✅ Swipe Button */}
           <View style={styles.swipeWrapper}>
-            <View style={styles.swipeContainer}>
+            <Animated.View style={[styles.swipeContainer, bgStyle]}>
               <Animated.View
-                style={[
-                  styles.swipeThumb,
-                  { transform: [{ translateX: swipeX }] },
-                ]}
+                style={[styles.swipeThumb, thumbStyle]}
                 {...panResponder.panHandlers}
               >
                 <Text style={styles.swipeThumbText}>{">>"}</Text>
               </Animated.View>
               <Text style={styles.swipeText}>Swipe to get started</Text>
-            </View>
+            </Animated.View>
           </View>
 
+          {/* ✅ Welcome Box */}
           {welcome && (
-            <Animated.View style={[styles.welcomeBox, { opacity: welcomeOpacity }]}>
+            <View style={styles.welcomeBox}>
               <Text style={styles.welcomeTitle}>Welcome to Kease 🎉</Text>
               <Text style={styles.welcomeDesc}>
                 Your booking journey starts here. Explore units and book easily!
               </Text>
-            </Animated.View>
+            </View>
           )}
         </View>
       </PagerView>
@@ -161,20 +175,18 @@ export default function MyPager() {
   );
 }
 
-const PaginationDots = ({ page }: { page: number }) => {
-  return (
-    <View style={styles.dotsContainer}>
-      <Text style={styles.arrow}>{"<"}</Text>
-      {[0, 1, 2, 3].map((i) => (
-        <View key={i} style={[styles.dot, page === i && styles.activeDot]} />
-      ))}
-      <Text style={styles.arrow}>{">"}</Text>
-    </View>
-  );
-};
+const PaginationDots = ({ page }: { page: number }) => (
+  <View style={styles.dotsContainer}>
+    <Text style={styles.arrow}>{"<"}</Text>
+    {[0, 1, 2, 3].map((i) => (
+      <View key={i} style={[styles.dot, page === i && styles.activeDot]} />
+    ))}
+    <Text style={styles.arrow}>{">"}</Text>
+  </View>
+);
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
+  container: { flex: 1, backgroundColor: "#ffffff" },
   page: {
     flex: 1,
     justifyContent: "flex-start",
@@ -192,12 +204,12 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
     marginBottom: 20,
-    color: "#000",
+    color: "#000000",
   },
   subtitle: {
     fontSize: 14,
     textAlign: "center",
-    color: "#555",
+    color: "#555555",
     marginBottom: 30,
   },
   dotsContainer: {
@@ -209,15 +221,15 @@ const styles = StyleSheet.create({
   dot: {
     width: 8,
     height: 8,
-    borderRadius: 4,
-    backgroundColor: "#ccc",
+    borderRadius: 7,
+    backgroundColor: "#d3d3d3",
     marginHorizontal: 4,
   },
-  activeDot: { backgroundColor: "#000" },
-  arrow: { fontSize: 16, color: "#000", marginHorizontal: 6 },
+  activeDot: { backgroundColor: "#000000" },
+  arrow: { fontSize: 16, color: "#000000", marginHorizontal: 6 },
 
   startNowBtn: { position: "absolute", bottom: 40 },
-  startNowText: { fontSize: 16, fontWeight: "600", color: "#000" },
+  startNowText: { fontSize: 16, fontWeight: "600", color: "#000000" },
 
   swipeWrapper: {
     position: "absolute",
@@ -229,14 +241,14 @@ const styles = StyleSheet.create({
     width: width * 0.85,
     height: 70,
     borderRadius: 35,
-    backgroundColor: "#f0625d",
+    backgroundColor: "#f8b3b0",
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
   },
   swipeText: {
     position: "absolute",
-    color: "#fff",
+    color: "#ffffff",
     fontSize: 16,
     fontWeight: "600",
   },
@@ -244,11 +256,13 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: "#fff",
+    backgroundColor: "#ffffff",
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
     left: 0,
+    borderWidth: 2,
+    borderColor: "#f0625d",
   },
   swipeThumbText: { color: "#f0625d", fontSize: 20, fontWeight: "700" },
 
@@ -258,7 +272,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#f9f9f9",
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#dddddd",
     width: width * 0.85,
     alignItems: "center",
   },
@@ -271,6 +285,6 @@ const styles = StyleSheet.create({
   welcomeDesc: {
     fontSize: 14,
     textAlign: "center",
-    color: "#444",
+    color: "#444444",
   },
 });
