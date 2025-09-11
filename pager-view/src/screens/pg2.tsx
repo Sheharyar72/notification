@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { globalStyles } from "../styles/globalstyle";
 import { PaginationDots } from "../components/PaginationDots";
+import AntDesign from "@expo/vector-icons/AntDesign"; // ✅ AntDesign import
 
 interface Pg2Props {
   page: number;
@@ -19,8 +20,18 @@ export const Pg2 = ({ page, onStartNow }: Pg2Props) => {
       <Text style={globalStyles.subtitle}>
         Kease offers many options with various features to suit your needs.
       </Text>
+
       <TouchableOpacity style={globalStyles.startNowBtn} onPress={onStartNow}>
-        <Text style={globalStyles.startNowText}>Start Now   &gt;</Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={globalStyles.startNowText}>Start Now</Text>
+       
+          <AntDesign
+            name="right"
+            size={12}
+            color="#000"
+            style={{ marginLeft: 6, textAlignVertical: "center" }}
+          />
+        </View>
       </TouchableOpacity>
     </View>
   );

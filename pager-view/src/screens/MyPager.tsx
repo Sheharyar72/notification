@@ -30,7 +30,7 @@ export const MyPager = ({ onComplete }: MyPagerProps) => {
   useEffect(() => {
     let toast: any;
     if (showToast === "welcome") {
-      toast = Toast.show("Welcome to Kease 🎉", {
+      toast = Toast.show("Welcome to Kease👋", {
         duration: Toast.durations.SHORT,
         position: Toast.positions.BOTTOM,
         shadow: true,
@@ -54,7 +54,7 @@ export const MyPager = ({ onComplete }: MyPagerProps) => {
           </Text>
           <Text style={{ fontSize: 12
             , color: "#333333", marginTop: 4 }}>
-           You’re all set to continue ✅
+           You’re all set to continue 
           </Text>
         </View>,
         {
@@ -64,18 +64,23 @@ export const MyPager = ({ onComplete }: MyPagerProps) => {
           animation: true,
           hideOnPress: true,
           backgroundColor: "#ffffff",
-          opacity: 1,
+          opacity: 0.8,
           containerStyle: {
-            borderRadius: 12,
-            paddingHorizontal: 15,
-            paddingVertical: 10,
-            borderWidth: 2,
-            borderColor: "#4CAF50",
-            shadowColor: "#000",
-            shadowOpacity: 0.3,
-            shadowRadius: 6,
-            shadowOffset: { width: 0, height: 3 },
-            elevation: 6,
+             backgroundColor: "#fff",
+        borderRadius: 10,
+        paddingHorizontal: 20,
+        paddingVertical: 6,
+        flexDirection: "column",   
+        alignItems: "flex-start",  
+         minHeight: 55,            
+        borderLeftWidth: 6,
+        borderLeftColor: "#4CAF50", 
+        shadowColor: "#000",
+        shadowOpacity: 0.15,
+        shadowRadius: 6,
+        shadowOffset: { width: 0, height: 2 },
+        elevation: 3,
+        
           },
         }
       );

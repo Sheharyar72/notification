@@ -8,9 +8,10 @@ import Animated, {
   runOnJS,
 } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
+import Toast from "react-native-toast-message"; // 👈 Toast import
 import { globalStyles } from "../styles/globalstyle";
 import { PaginationDots } from "../components/PaginationDots";
-import AntDesign from "@expo/vector-icons/AntDesign"; // ✅ AntDesign import
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const { width } = Dimensions.get("window");
 
@@ -22,6 +23,23 @@ interface Pg4Props {
 export const Pg4 = ({ page, onSwipeComplete }: Pg4Props) => {
   const swipeX = useSharedValue(0);
   const shadow = useSharedValue(2);
+
+  const showToasts = () => {
+    // ✅ Bottom Toast
+    Toast.show({
+      type: "info",
+      text1: "Welcome to Kease",
+      position: "bottom",
+    });
+
+    // ✅ Top Toast
+    Toast.show({
+      type: "success",
+      text1: "Successfully",
+      text2: "Action completed successfully",
+      position: "top",
+    });
+  };
 
   const panResponder = useRef(
     PanResponder.create({
@@ -36,7 +54,14 @@ export const Pg4 = ({ page, onSwipeComplete }: Pg4Props) => {
         if (gesture.dx > width * 0.5) {
           swipeX.value = withTiming(width * 0.85 - 70, { duration: 200 }, () => {
             runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
+
+            // ✅ Run Toasts
+            runOnJS(showToasts)();
+
+            // ✅ Call navigation handler
             runOnJS(onSwipeComplete)();
+
+            // Reset values
             swipeX.value = withSpring(0, {
               damping: 15,
               stiffness: 120,
@@ -76,7 +101,10 @@ export const Pg4 = ({ page, onSwipeComplete }: Pg4Props) => {
   return (
     <View style={globalStyles.page}>
       <Image source={require("../../assets/pg4.jpg")} style={globalStyles.image} />
+      
+      {/* ✅ Pagination dots ab bhi sahi kaam karenge */}
       <PaginationDots page={page} />
+
       <Text style={globalStyles.title}>Book your unit in just a few steps</Text>
       <Text style={globalStyles.subtitle}>
         You can easily and securely book your unit and complete the payment
@@ -89,7 +117,6 @@ export const Pg4 = ({ page, onSwipeComplete }: Pg4Props) => {
             style={[globalStyles.swipeThumb, thumbStyle]}
             {...panResponder.panHandlers}
           >
-        
             <AntDesign name="doubleright" size={22} color="red" />
           </Animated.View>
           <Text style={globalStyles.swipeText}>Swipe to get started</Text>

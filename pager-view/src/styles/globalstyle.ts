@@ -58,7 +58,7 @@ export const globalStyles = StyleSheet.create({
     bottom: 40 
   },
   startNowText: { 
-    fontSize: 16, 
+    fontSize: 15, 
     fontWeight: "600", 
     color: "#000000" 
   },
@@ -101,7 +101,7 @@ export const globalStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
   },
-  // Home Screen Styles
+  
   homeContainer: {
     flex: 1,
     justifyContent: "center",

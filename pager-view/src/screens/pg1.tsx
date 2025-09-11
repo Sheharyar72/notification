@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { globalStyles } from "../styles/globalstyle";
 import { PaginationDots } from "../components/PaginationDots";
-import AntDesign from "@expo/vector-icons/AntDesign"; // ✅ AntDesign import
+import AntDesign from "@expo/vector-icons/AntDesign"; 
 
 interface Pg1Props {
   page: number;
@@ -23,7 +23,12 @@ export const Pg1 = ({ page, onStartNow }: Pg1Props) => {
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={globalStyles.startNowText}>Start Now</Text>
           
-          <AntDesign name="right" size={12} color ="black"style ={{marginLeft:4}}/>
+          <AntDesign
+            name="right"
+            size={12}
+            color="#000"
+            style={{ marginLeft: 6, textAlignVertical: "center" }}
+          />
         </View>
       </TouchableOpacity>
     </View>
