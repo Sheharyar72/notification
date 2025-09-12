@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { globalStyles } from "../styles/globalstyle";
 import { PaginationDots } from "../components/PaginationDots";
-import AntDesign from "@expo/vector-icons/AntDesign"; // ✅ AntDesign import
+import AntDesign from "@expo/vector-icons/AntDesign"; 
 
 interface Pg3Props {
   page: number;

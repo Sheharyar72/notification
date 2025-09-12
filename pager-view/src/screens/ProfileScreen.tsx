@@ -1,17 +1,34 @@
-// screens/ProfileScreen.tsx
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 export const ProfileScreen = () => {
   return (
-    <View style={{ flex: 1, backgroundColor: "white", alignItems: "center", paddingTop: 24 }}>
-      <Text style={{ fontSize: 20, fontWeight: "bold", color: "black" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F7F7" }}>
+    
+      <StatusBar barStyle="default" />
+
+      
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: "bold",
+          color: "black",
+          alignSelf: "center",
+          marginTop: 10,
+        }}
+      >
         Profile
       </Text>
 
-      <View style={{ marginTop: 20, width: "90%" }}>
-        {/* Login box */}
+      <View style={{ marginTop: 20, width: "92%", alignSelf: "center" }}>
+        
         <TouchableOpacity
           style={{
             flexDirection: "row",
@@ -19,74 +36,61 @@ export const ProfileScreen = () => {
             alignItems: "center",
             backgroundColor: "white",
             borderRadius: 12,
-            padding: 14,
-            borderWidth: 1,
-            borderColor: "#eee",
+            padding: 16,
+            marginBottom: 14,
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Ionicons name="person" size={20} color="yellow" />
-            <Text style={{ fontSize: 16, color: "black" }}> Login</Text>
-          </View>
-          <Ionicons name="chevron-forward" size={20} color="#999" />
-        </TouchableOpacity>
-
-        {/* Change language */}
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            backgroundColor: "white",
-            borderRadius: 12,
-            paddingVertical: 12,
-            paddingHorizontal: 14,
-            borderWidth: 1,
-            borderColor: "#eee",
-            marginTop: 12,
-          }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <MaterialIcons name="language" size={20} color="#444" />
-            <Text style={{ fontSize: 16, color: "black" }}> Change language</Text>
-          </View>
-          <Ionicons name="chevron-forward" size={20} color="#999" />
-        </TouchableOpacity>
-
-        {/* Information */}
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            backgroundColor: "white",
-            borderRadius: 12,
-            padding: 14,
-            borderWidth: 1,
-            borderColor: "#eee",
-            marginTop: 12,
-          }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <View
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: 14,
-                backgroundColor: "yellow",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ fontWeight: "bold", color: "white" }}>!</Text>
-            </View>
-            <Text style={{ fontSize: 16, color: "black", marginLeft: 6 }}>
-              Information
+            <Ionicons name="person-circle-outline" size={40} color="#F9A825" />
+            <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 10 }}>
+              Login
             </Text>
           </View>
-          <Ionicons name="chevron-forward" size={20} color="#999" />
+          <Ionicons name="chevron-forward" size={22} color="#999" />
+        </TouchableOpacity>
+
+
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            backgroundColor: "white",
+            borderRadius: 12,
+            padding: 16,
+            marginBottom: 14,
+          }}
+        >
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <MaterialIcons name="language" size={28} color="#F9A825" />
+            <Text style={{ fontSize: 16, marginLeft: 10 }}>
+              Change language
+            </Text>
+          </View>
+          <Text style={{ fontSize: 16, fontWeight: "bold", color: "#F9A825" }}>
+            EN
+          </Text>
+        </TouchableOpacity>
+
+        
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            backgroundColor: "white",
+            borderRadius: 12,
+            padding: 16,
+          }}
+        >
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Ionicons name="information-circle" size={28} color="#F9A825" />
+            <Text style={{ fontSize: 16, marginLeft: 10 }}>Information</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={22} color="#999" />
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
+

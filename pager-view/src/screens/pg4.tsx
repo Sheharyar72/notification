@@ -8,7 +8,7 @@ import Animated, {
   runOnJS,
 } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
-import Toast from "react-native-toast-message"; // 👈 Toast import
+import Toast from "react-native-toast-message"; 
 import { globalStyles } from "../styles/globalstyle";
 import { PaginationDots } from "../components/PaginationDots";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -25,14 +25,14 @@ export const Pg4 = ({ page, onSwipeComplete }: Pg4Props) => {
   const shadow = useSharedValue(2);
 
   const showToasts = () => {
-    // ✅ Bottom Toast
+    
     Toast.show({
       type: "info",
       text1: "Welcome to Kease",
       position: "bottom",
     });
 
-    // ✅ Top Toast
+  
     Toast.show({
       type: "success",
       text1: "Successfully",
@@ -55,13 +55,13 @@ export const Pg4 = ({ page, onSwipeComplete }: Pg4Props) => {
           swipeX.value = withTiming(width * 0.85 - 70, { duration: 200 }, () => {
             runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
 
-            // ✅ Run Toasts
+            
             runOnJS(showToasts)();
 
-            // ✅ Call navigation handler
+        
             runOnJS(onSwipeComplete)();
 
-            // Reset values
+            
             swipeX.value = withSpring(0, {
               damping: 15,
               stiffness: 120,
@@ -102,7 +102,7 @@ export const Pg4 = ({ page, onSwipeComplete }: Pg4Props) => {
     <View style={globalStyles.page}>
       <Image source={require("../../assets/pg4.jpg")} style={globalStyles.image} />
       
-      {/* ✅ Pagination dots ab bhi sahi kaam karenge */}
+    
       <PaginationDots page={page} />
 
       <Text style={globalStyles.title}>Book your unit in just a few steps</Text>

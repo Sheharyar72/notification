@@ -1,67 +1,73 @@
-// screens/NotificationsScreen.tsx
 import React from "react";
-import { View, Text, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, Dimensions, Image, SafeAreaView, StatusBar } from "react-native";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 export const NotificationsScreen = () => {
   return (
-    <View style={{ flex: 1, backgroundColor: "white", alignItems: "center", paddingTop: 24 }}>
-      <Text style={{ fontSize: 20, fontWeight: "bold", color: "black" }}>
-        Notifications
-      </Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      
+      <StatusBar barStyle="default" />
 
-      {/* Images placeholder */}
-      <View style={{ flexDirection: "row", marginTop: 20 }}>
-        <View
-          style={{
-            width: width * 0.32,
-            height: width * 0.55,
-            borderRadius: 12,
-            borderWidth: 1,
-            borderColor: "#ddd",
-            justifyContent: "center",
-            alignItems: "center",
-            marginRight: 12,
-          }}
-        >
-          <Text style={{ color: "#999" }}>Mobile</Text>
+      <View style={{ flex: 1, alignItems: "center" }}>
+        
+        <View style={{ width: "100%", marginTop: height * 0.03, alignItems: "center" }}>
+          <Text style={{ fontSize: 16, fontWeight: "bold", color: "black" }}>
+            Notifications
+          </Text>
+
+          <View
+            style={{
+              width: "100%",
+              height: 0.5,
+              backgroundColor: "#ccc",
+              marginTop: 0.55,
+              opacity: 0.5,
+            }}
+          />
         </View>
-        <View
-          style={{
-            width: width * 0.28,
-            height: width * 0.55,
-            borderRadius: 12,
-            borderWidth: 1,
-            borderColor: "#ddd",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: "#999" }}>Person</Text>
+
+      
+        <View style={{ flexDirection: "row", marginTop: 10 }}>
+          <Image
+            source={require("../../assets/img2.jpg")}
+            style={{
+              width: width * 0.7,
+              height: width * 0.85,
+              borderRadius: 12,
+              resizeMode: "cover",
+            }}
+          />
         </View>
-      </View>
 
-      <Text style={{ fontSize: 14, fontWeight: "bold", color: "black", marginTop: 20 }}>
-        You should sign in first
-      </Text>
-      <Text style={{ color: "#444", fontSize: 13, textAlign: "center", marginTop: 8 }}>
-        Sign in to complete the payment process
-      </Text>
-
-      <TouchableOpacity
-        style={{
-          backgroundColor: "#333",
-          paddingVertical: 12,
-          paddingHorizontal: 36,
-          borderRadius: 8,
-          marginTop: 18,
-        }}
-      >
-        <Text style={{ color: "white", fontWeight: "600", fontSize: 16 }}>
-          Login
+        <Text style={{ fontSize: 14, fontWeight: "bold", color: "black", marginTop: 20 }}>
+          You should sign in first
         </Text>
-      </TouchableOpacity>
-    </View>
+        <Text style={{ color: "#444", fontSize: 13, textAlign: "center", marginTop: 8 }}>
+          Sign in to complete the payment process
+        </Text>
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#333", 
+            paddingVertical: 12,
+            width: width * 0.85,        
+            borderRadius: 30,           
+            marginTop: 26,
+            alignItems: "center",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,              
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "600", fontSize: 16 }}>
+            Login
+          </Text>
+        </TouchableOpacity>
+
+      </View>
+    </SafeAreaView>
   );
 };

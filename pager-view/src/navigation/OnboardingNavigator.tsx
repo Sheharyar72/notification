@@ -1,4 +1,3 @@
-// navigation/OnboardingNavigator.tsx
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Pg1 } from "../screens/pg1";
