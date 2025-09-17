@@ -9,23 +9,26 @@ import { Pg1 } from "./pg1";
 import { Pg2 } from "./pg2";
 import { Pg3 } from "./pg3";
 import { Pg4 } from "./pg4";
+import { useNavigation } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
+import type { RootStackParamList } from "../../App";  // 👈 import RootStackParamList from App.tsx
 
-export default function App() {
+export default function OnboardingWrapper() {
   return (
     <RootSiblingParent>
-      <MyPager onComplete={() => console.log("Onboarding Done!")} />
+      <MyPager />
     </RootSiblingParent>
   );
 }
 
-interface MyPagerProps {
-  onComplete: () => void;
-}
+type NavigationProp = StackNavigationProp<RootStackParamList, "Onboarding">;
 
-export const MyPager = ({ onComplete }: MyPagerProps) => {
+export const MyPager = () => {
   const pagerRef = useRef<PagerView>(null);
   const [page, setPage] = useState<number>(0);
   const [showToast, setShowToast] = useState<"welcome" | "success" | null>(null);
+
+  const navigation = useNavigation<NavigationProp>();
 
   useEffect(() => {
     let toast: any;
@@ -52,9 +55,8 @@ export const MyPager = ({ onComplete }: MyPagerProps) => {
           <Text style={{ fontSize: 14, fontWeight: "700", color: "#000000" }}>
             Successfully
           </Text>
-          <Text style={{ fontSize: 12
-            , color: "#333333", marginTop: 4 }}>
-           You’re all set to continue 
+          <Text style={{ fontSize: 12, color: "#333333", marginTop: 4 }}>
+            You’re all set to continue
           </Text>
         </View>,
         {
@@ -66,21 +68,20 @@ export const MyPager = ({ onComplete }: MyPagerProps) => {
           backgroundColor: "#ffffff",
           opacity: 0.8,
           containerStyle: {
-             backgroundColor: "#fff",
-        borderRadius: 10,
-        paddingHorizontal: 20,
-        paddingVertical: 6,
-        flexDirection: "column",   
-        alignItems: "flex-start",  
-         minHeight: 55,            
-        borderLeftWidth: 6,
-        borderLeftColor: "#4CAF50", 
-        shadowColor: "#000",
-        shadowOpacity: 0.15,
-        shadowRadius: 6,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 3,
-        
+            backgroundColor: "#fff",
+            borderRadius: 10,
+            paddingHorizontal: 20,
+            paddingVertical: 6,
+            flexDirection: "column",
+            alignItems: "flex-start",
+            minHeight: 55,
+            borderLeftWidth: 6,
+            borderLeftColor: "#4CAF50",
+            shadowColor: "#000",
+            shadowOpacity: 0.15,
+            shadowRadius: 6,
+            shadowOffset: { width: 0, height: 2 },
+            elevation: 3,
           },
         }
       );
@@ -90,12 +91,14 @@ export const MyPager = ({ onComplete }: MyPagerProps) => {
         setShowToast(null);
 
         AsyncStorage.setItem("onboardingCompleted", "true");
-        onComplete();
+
+        // 👇 Navigate to Home after onboarding complete
+        navigation.replace("Home");
       }, 2000);
 
       return () => clearTimeout(timer);
     }
-  }, [showToast, onComplete]);
+  }, [showToast, navigation]);
 
   const handleStartNow = () => {
     if (pagerRef.current) {

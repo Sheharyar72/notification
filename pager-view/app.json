@@ -2,6 +2,7 @@
   "expo": {
     "name": "pager-view",
     "slug": "pager-view",
+    "jsEngine": "hermes",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

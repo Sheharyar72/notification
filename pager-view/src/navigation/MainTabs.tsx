@@ -14,15 +14,18 @@ export const MainTabs = () => {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ color, size }) => {
-          let iconName: keyof typeof Ionicons.glyphMap = "home";
+          let iconName: keyof typeof Ionicons.glyphMap = "home-outline";
 
-          if (route.name === "Home") iconName = "home";
-          else if (route.name === "Bookings") iconName = "book";
-          else if (route.name === "Notifications") iconName = "notifications";
-          else if (route.name === "Profile") iconName = "person";
+          if (route.name === "Home") iconName = "home-outline";
+          else if (route.name === "Bookings") iconName = "calendar-outline";
+          else if (route.name === "Notifications") iconName = "notifications-outline";
+          else if (route.name === "Profile") iconName = "person-outline";
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
+        tabBarActiveTintColor: "black",
+        tabBarInactiveTintColor: "#666",
+        tabBarLabelStyle: { fontSize: 11 },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />

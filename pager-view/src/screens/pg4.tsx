@@ -117,7 +117,7 @@ export const Pg4 = ({ page, onSwipeComplete }: Pg4Props) => {
             style={[globalStyles.swipeThumb, thumbStyle]}
             {...panResponder.panHandlers}
           >
-            <AntDesign name="doubleright" size={22} color="red" />
+         <AntDesign name="double-right" size={24} color="red" />
           </Animated.View>
           <Text style={globalStyles.swipeText}>Swipe to get started</Text>
         </Animated.View>
